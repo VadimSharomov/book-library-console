@@ -26,7 +26,7 @@ public class BookLibraryController {
     }
 
     public void start() {
-        String greeting = "\nWelcome to our library!\n";
+        String greeting = "\nWelcome to our library!";
         gui.showMessage(greeting);
         Answer answer = getAnswer();
         while (!answer.isExit()) {
@@ -45,7 +45,7 @@ public class BookLibraryController {
 
                 if (numberBooks > 0) {
                     if (numberBooks > 1) {
-                        gui.showMessage("We have few books with such name please choose one by typing a number of book:\n");
+                        gui.showMessage("We have few books with such name. Please choose one by typing a number of book:\n");
                         numberSelectedBook = gui.chooseBook(bookService.getBookByName(answer.getBook()));
                     }
 
@@ -68,6 +68,8 @@ public class BookLibraryController {
             answerStr = gui.showMainMenu(bookService.getMainMenu());
             if (recogniseCommand(answerStr)) {
                 break;
+            } else {
+                gui.showMessage("Unrecognized command: '" + answerStr + "'\n");
             }
         }
         if ("exit".equals(answerStr)) {

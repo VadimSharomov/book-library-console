@@ -26,10 +26,10 @@ public class BookService {
         this.dao = dao;
 
         mainMenu = new ArrayList<>();
-        mainMenu.add("To add new book type: add J. AuthorName “Harry Potter”");
-        mainMenu.add("To remove book type: remove A Song of Ice and Fire");
-        mainMenu.add("To edit book type: edit book “Harry Potter”");
+        mainMenu.add("To add new book type: add X. AuthorName \"Book Name\"");
+        mainMenu.add("To edit book type: edit book Name of Book");
         mainMenu.add("To get all books type: all books");
+        mainMenu.add("To remove book type: remove Name of Book");
 
         listCommands = new ArrayList<>();
         listCommands.add("add");

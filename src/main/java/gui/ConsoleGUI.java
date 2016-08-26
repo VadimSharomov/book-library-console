@@ -17,12 +17,13 @@ public class ConsoleGUI implements GUI {
 
     @Override
     public String showMainMenu(List<String> mainMenu) {
-        System.out.println("\n");
+        System.out.println("Main menu:");
         for (int i = 0; i < mainMenu.size(); i++) {
             System.out.println(i + ": " + mainMenu.get(i));
         }
-        Scanner scanner = new Scanner(System.in);
+        System.out.println(mainMenu.size() + ": To exit from library type: exit");
         System.out.println("Input command and press Enter:");
+        Scanner scanner = new Scanner(System.in);
         return scanner.nextLine().trim();
     }
 
@@ -43,6 +44,7 @@ public class ConsoleGUI implements GUI {
         for (int i = 0; i < listBook.size(); i++) {
             System.out.println((i + 1) + ". " + listBook.get(i));
         }
+        System.out.println();
     }
 
     @Override
