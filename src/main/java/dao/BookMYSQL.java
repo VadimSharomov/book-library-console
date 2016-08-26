@@ -65,13 +65,13 @@ public class BookMYSQL implements BookDAO {
     }
 
     @Override
-    public void updateBook(String oldNameBook, String newNameBook) {
+    public void updateBook(long oldBookId, String newNameBook) {
         connectToBase();
-        StringBuilder query = new StringBuilder("UPDATE ").append(table).append(" SET name = ? WHERE name = ?");
+        StringBuilder query = new StringBuilder("UPDATE ").append(table).append(" SET name = ? WHERE id = ?");
         try {
             preparedStatement = dbConnection.prepareStatement(query.toString());
             preparedStatement.setString(1, newNameBook);
-            preparedStatement.setString(2, oldNameBook);
+            preparedStatement.setLong(2, oldBookId);
             preparedStatement.executeUpdate();
             closeConnect();
         } catch (SQLException e) {

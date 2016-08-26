@@ -27,14 +27,14 @@ public class BookService {
 
         mainMenu = new ArrayList<>();
         mainMenu.add("To add new book type: add X. AuthorName \"Book Name\"");
-        mainMenu.add("To edit book type: edit book Name of Book");
+        mainMenu.add("To edit book type: edit Name of Book");
         mainMenu.add("To get all books type: all books");
         mainMenu.add("To remove book type: remove Name of Book");
 
         listCommands = new ArrayList<>();
         listCommands.add("add");
         listCommands.add("remove");
-        listCommands.add("edit book");
+        listCommands.add("edit");
         listCommands.add("all books");
     }
 
@@ -67,7 +67,7 @@ public class BookService {
     }
 
     public void editBook(Book oldBook, Book newBook) {
-        dao.updateBook(oldBook.getName(), newBook.getName());
+        dao.updateBook(oldBook.getId(), newBook.getName());
     }
 
     public int remove(Book book){

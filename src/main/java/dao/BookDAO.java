@@ -11,7 +11,7 @@ public interface BookDAO {
 
     void addBook(String nameBook, String author);
 
-    void updateBook(String oldNameBook, String newNameBook);
+    void updateBook(long oldBookId, String newNameBook);
 
     int removeBook(long bookId);
 
