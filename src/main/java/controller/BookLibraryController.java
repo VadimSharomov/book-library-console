@@ -40,19 +40,19 @@ public class BookLibraryController {
                 List<Book> listBooks = bookService.getAllBoks();
                 gui.showBooks(listBooks);
             } else if ("remove".equals(answer.getLibraryCommand())) {
-                int numberBooks = bookService.getBookByName(answer.getBook()).size();
+                List<Book> listBooks = bookService.getBookByName(answer.getBook());
                 int numberSelectedBook = 0;
 
-                if (numberBooks > 0) {
-                    if (numberBooks > 1) {
+                if (listBooks.size() > 0) {
+                    if (listBooks.size() > 1) {
                         gui.showMessage("We have few books with such name. Please choose one by typing a number of book:\n");
-                        numberSelectedBook = gui.chooseBook(bookService.getBookByName(answer.getBook()));
+                        numberSelectedBook = gui.chooseBook(listBooks);
                     }
 
-                    if (bookService.remove(bookService.getBookByName(answer.getBook()).get(numberSelectedBook)) > 0) {
-                        gui.showMessage("Book " + answer.getBook() + " was removed\n");
+                    if (bookService.remove(listBooks.get(numberSelectedBook)) > 0) {
+                        gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was removed\n");
                     } else {
-                        gui.showMessage("Book " + answer.getBook() + " was not removed\n");
+                        gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was not removed\n");
                     }
                 } else {
                     gui.showMessage("Not found this book:\n" + answer.getBook());

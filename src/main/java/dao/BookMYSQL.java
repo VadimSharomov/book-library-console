@@ -82,13 +82,13 @@ public class BookMYSQL implements BookDAO {
     }
 
     @Override
-    public int removeBook(String bookName) {
+    public int removeBook(long bookId) {
         connectToBase();
         int result = 0;
-        StringBuilder query = new StringBuilder("DELETE FROM ").append(table).append(" WHERE name = ?");
+        StringBuilder query = new StringBuilder("DELETE FROM ").append(table).append(" WHERE id = ?");
         try {
             preparedStatement = dbConnection.prepareStatement(query.toString());
-            preparedStatement.setString(1, bookName);
+            preparedStatement.setLong(1, bookId);
             result = preparedStatement.executeUpdate();
             closeConnect();
         } catch (SQLException e) {
@@ -109,7 +109,7 @@ public class BookMYSQL implements BookDAO {
             preparedStatement = dbConnection.prepareStatement(query.toString());
             ResultSet rs = preparedStatement.executeQuery(query.toString());
             while (rs.next()) {
-                listAllBook.add(new Book(rs.getString("name"), rs.getString("author")));
+                listAllBook.add(new Book(rs.getLong("id"), rs.getString("name"), rs.getString("author")));
             }
 
             closeConnect();
@@ -131,7 +131,7 @@ public class BookMYSQL implements BookDAO {
             preparedStatement.setString(1, bookName);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                listAllBook.add(new Book(rs.getString("name"), rs.getString("author")));
+                listAllBook.add(new Book(rs.getLong("id"), rs.getString("name"), rs.getString("author")));
             }
 
             closeConnect();

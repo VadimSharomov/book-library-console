@@ -13,7 +13,7 @@ public interface BookDAO {
 
     void updateBook(String oldNameBook, String newNameBook);
 
-    int removeBook(String bookName);
+    int removeBook(long bookId);
 
     List<Book> allBooks();
 

@@ -71,7 +71,7 @@ public class BookService {
     }
 
     public int remove(Book book){
-        return dao.removeBook(book.getName());
+        return dao.removeBook(book.getId());
     }
 }
 
