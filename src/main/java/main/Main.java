@@ -4,6 +4,7 @@ import controller.BookLibraryController;
 import dao.BookDAO;
 import dao.BookMYSQL;
 import gui.ConsoleGUI;
+import gui.GUI;
 import org.slf4j.Logger;
 import services.BookService;
 
@@ -26,7 +27,8 @@ public class Main {
         Properties propDB = getPropertiesOfDataBase();
         BookDAO bookDAO = new BookMYSQL(propDB.getProperty("url"), propDB.getProperty("username"), propDB.getProperty("password"), propDB.getProperty("table"));
         BookService bookService = new BookService(bookDAO);
-        BookLibraryController bookLibraryController = new BookLibraryController(new ConsoleGUI(), new BookService(bookDAO));
+        GUI gui = new ConsoleGUI();
+        BookLibraryController bookLibraryController = new BookLibraryController(bookService, gui);
 
         bookLibraryController.start();
     }

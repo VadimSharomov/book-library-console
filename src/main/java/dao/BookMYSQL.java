@@ -48,37 +48,41 @@ public class BookMYSQL implements BookDAO {
     }
 
     @Override
-    public void addBook(String nameBook, String author) {
+    public int addBook(String nameBook, String author) {
         connectToBase();
+        int result = 0;
         StringBuilder query = new StringBuilder("INSERT INTO ").append(table).append(" (name, author) VALUES (?,?)");
         try {
             preparedStatement = dbConnection.prepareStatement(query.toString());
             preparedStatement.setString(1, nameBook);
             preparedStatement.setString(2, author);
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
             closeConnect();
         } catch (SQLException e) {
             logger.error("SQLException in addBook", e.getMessage());
         } finally {
             closeConnect();
         }
+        return result;
     }
 
     @Override
-    public void updateBook(long oldBookId, String newNameBook) {
+    public int updateBook(long oldBookId, String newNameBook) {
         connectToBase();
+        int result = 0;
         StringBuilder query = new StringBuilder("UPDATE ").append(table).append(" SET name = ? WHERE id = ?");
         try {
             preparedStatement = dbConnection.prepareStatement(query.toString());
             preparedStatement.setString(1, newNameBook);
             preparedStatement.setLong(2, oldBookId);
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
             closeConnect();
         } catch (SQLException e) {
             logger.error("SQLException in updateBook", e.getMessage());
         } finally {
             closeConnect();
         }
+        return result;
     }
 
     @Override

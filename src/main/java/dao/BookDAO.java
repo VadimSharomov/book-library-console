@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface BookDAO {
 
-    void addBook(String nameBook, String author);
+    int addBook(String nameBook, String author);
 
-    void updateBook(long oldBookId, String newNameBook);
+    int updateBook(long oldBookId, String newNameBook);
 
     int removeBook(long bookId);
 

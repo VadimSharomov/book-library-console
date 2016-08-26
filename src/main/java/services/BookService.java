@@ -4,7 +4,6 @@ import dao.BookDAO;
 import entity.Book;
 import org.slf4j.Logger;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,6 @@ public class BookService {
     private List<String> mainMenu;
     private List<String> listCommands;
 
-    @Resource
     private BookDAO dao;
 
     public BookService(BookDAO dao) {
@@ -46,10 +44,6 @@ public class BookService {
         this.listCommands = listCommands;
     }
 
-    public void add(Book book) {
-        dao.addBook(book.getName(), book.getAuthor());
-    }
-
     public List<String> getMainMenu() {
         return mainMenu;
     }
@@ -58,7 +52,11 @@ public class BookService {
         this.mainMenu = mainMenu;
     }
 
-    public List<Book> getAllBoks() {
+    public int add(Book book) {
+        return dao.addBook(book.getName(), book.getAuthor());
+    }
+
+    public List<Book> getAllBooks() {
         return dao.allBooks();
     }
 
@@ -66,8 +64,8 @@ public class BookService {
         return dao.getBookByName(book.getName());
     }
 
-    public void editBook(Book oldBook, Book newBook) {
-        dao.updateBook(oldBook.getId(), newBook.getName());
+    public int editBook(Book oldBook, Book newBook) {
+        return dao.updateBook(oldBook.getId(), newBook.getName());
     }
 
     public int remove(Book book){

@@ -21,69 +21,89 @@ public class BookLibraryController {
     private BookService bookService;
     private GUI gui;
 
-    public BookLibraryController(GUI gui, BookService bookService) {
-        this.gui = gui;
+    public BookLibraryController(BookService bookService, GUI gui) {
         this.bookService = bookService;
+        this.gui = gui;
     }
 
-    @SuppressWarnings("Since15")
     public void start() {
         String greeting = "\nWelcome to our library!";
         gui.showMessage(greeting);
-        Answer answer = getAnswer();
+        Answer answer = getAnswerFromUser();
         while (!answer.isExit()) {
             if ("add".equals(answer.getLibraryCommand())) {
-                bookService.add(answer.getBook());
-                gui.showMessage("Book " + answer.getBook() + " was added\n");
+                commandAdd(answer);
             } else if ("edit".equals(answer.getLibraryCommand())) {
-                List<Book> listBooks = bookService.getBookByName(answer.getBook());
-                int numberSelectedBook = 0;
-
-                if (listBooks.size() > 0) {
-                    if (listBooks.size() > 1) {
-                        gui.showMessage("We have few books with such name. Please choose one by typing a number of book:\n");
-                        numberSelectedBook = gui.chooseBook(listBooks);
-                    }
-                    bookService.editBook(listBooks.get(numberSelectedBook), answer.getNewBook());
-                    gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was renamed to " + answer.getNewBook() + "\n");
-                } else {
-                    gui.showMessage("Not found this book:\n" + answer.getBook());
-                }
+                commandEdit(answer);
             } else if ("all books".equals(answer.getLibraryCommand())) {
-                List<Book> listBooks = bookService.getAllBoks();
-                listBooks.sort(new Comparator<Book>() {
-                    @Override
-                    public int compare(Book b1, Book b2) {
-                        int resCompare = String.CASE_INSENSITIVE_ORDER.compare(b1.getName(), b2.getName());
-                        return (resCompare != 0) ? resCompare : b1.getName().compareTo(b2.getName());
-                    }
-                });
-                gui.showBooks(listBooks);
+                commandAllBooks();
             } else if ("remove".equals(answer.getLibraryCommand())) {
-                List<Book> listBooks = bookService.getBookByName(answer.getBook());
-                int numberSelectedBook = 0;
-
-                if (listBooks.size() > 0) {
-                    if (listBooks.size() > 1) {
-                        gui.showMessage("We have few books with such name. Please choose one by typing a number of book:\n");
-                        numberSelectedBook = gui.chooseBook(listBooks);
-                    }
-
-                    if (bookService.remove(listBooks.get(numberSelectedBook)) > 0) {
-                        gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was removed\n");
-                    } else {
-                        gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was not removed\n");
-                    }
-                } else {
-                    gui.showMessage("Not found this book:\n" + answer.getBook());
-                }
+                commandRemove(answer);
             }
-            answer = getAnswer();
+            answer = getAnswerFromUser();
         }
-
     }
 
-    private Answer getAnswer() {
+    private void commandRemove(Answer answer) {
+        List<Book> listBooks = bookService.getBookByName(answer.getBook());
+        int numberSelectedBook = 0;
+
+        if (listBooks.size() > 0) {
+            if (listBooks.size() > 1) {
+                gui.showMessage("We have few books with such name. Please choose one by typing a number of book:\n");
+                numberSelectedBook = gui.chooseBook(listBooks);
+            }
+            String not = " not";
+            if (bookService.remove(listBooks.get(numberSelectedBook)) > 0) {
+                not = "";
+            }
+                gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + not + " removed\n");
+        } else {
+            gui.showMessage("Not found this book:\n" + answer.getBook());
+        }
+    }
+
+    @SuppressWarnings("Since15")
+    private void commandAllBooks() {
+        List<Book> listBooks = bookService.getAllBooks();
+        listBooks.sort(new Comparator<Book>() {
+            @Override
+            public int compare(Book b1, Book b2) {
+                int resCompare = String.CASE_INSENSITIVE_ORDER.compare(b1.getName(), b2.getName());
+                return (resCompare != 0) ? resCompare : b1.getName().compareTo(b2.getName());
+            }
+        });
+        gui.showBooks(listBooks);
+    }
+
+    private void commandEdit(Answer answer) {
+        List<Book> listBooks = bookService.getBookByName(answer.getBook());
+        int numberSelectedBook = 0;
+
+        if (listBooks.size() > 0) {
+            if (listBooks.size() > 1) {
+                gui.showMessage("We have few books with such name. Please choose one by typing a number of book:\n");
+                numberSelectedBook = gui.chooseBook(listBooks);
+            }
+            String not = " not";
+            if (bookService.editBook(listBooks.get(numberSelectedBook), answer.getNewBook()) > 0) {
+                not = "";
+            }
+            gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + not + " renamed to " + answer.getNewBook() + "\n");
+        } else {
+            gui.showMessage("Not found this book:\n" + answer.getBook());
+        }
+    }
+
+    private void commandAdd(Answer answer) {
+        String not = " not";
+        if (bookService.add(answer.getBook()) > 0) {
+            not = "";
+        }
+        gui.showMessage("Book " + answer.getBook() + " was" + not + " added\n");
+    }
+
+    private Answer getAnswerFromUser() {
         String answerStr;
         while (true) {
             answerStr = gui.showMainMenu(bookService.getMainMenu());
