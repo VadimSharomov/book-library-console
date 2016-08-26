@@ -30,7 +30,7 @@ public class BookMYSQL implements BookDAO {
 
     private void connectToBase() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             dbConnection = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException | SQLException e) {
             logger.error("ClassNotFoundException or SQLException in connectToBase", e.getMessage());
