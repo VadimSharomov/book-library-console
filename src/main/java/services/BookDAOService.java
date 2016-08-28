@@ -12,12 +12,12 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * @author Vadim Sharomov
  */
-public class BookService {
-    private final static Logger logger = getLogger(BookService.class);
+public class BookDAOService {
+    private final static Logger logger = getLogger(BookDAOService.class);
 
     private BookDAO dao;
 
-    public BookService(BookDAO dao) {
+    public BookDAOService(BookDAO dao) {
         this.dao = dao;
 
     }

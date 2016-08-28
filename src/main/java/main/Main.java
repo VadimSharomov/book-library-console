@@ -3,11 +3,11 @@ package main;
 import controller.LibraryController;
 import dao.BookDAO;
 import dao.BookMYSQL;
-import controller.BookManager;
+import controller.BookCommandManager;
 import gui.ConsoleGUI;
 import gui.GUI;
 import org.slf4j.Logger;
-import services.BookService;
+import services.BookDAOService;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,18 +25,29 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Properties propDB = getPropertiesOfDataBase();
+        Properties propDB = getPropertiesOfDataBase(args);
         BookDAO bookDAO = new BookMYSQL(propDB.getProperty("url"), propDB.getProperty("username"), propDB.getProperty("password"), propDB.getProperty("table"));
-        BookService bookService = new BookService(bookDAO);
+
+        BookDAOService bookDAOService = new BookDAOService(bookDAO);
+
         GUI gui = new ConsoleGUI();
-        BookManager bookManager = new BookManager(bookService, gui);
-        LibraryController libraryController = new LibraryController(bookService, gui, bookManager);
+
+        BookCommandManager bookCommandManager = new BookCommandManager(bookDAOService, gui);
+
+        LibraryController libraryController = new LibraryController(bookCommandManager, gui);
 
         libraryController.start();
     }
 
-    private static Properties getPropertiesOfDataBase() {
+    private static Properties getPropertiesOfDataBase(String[] args) {
         String pathToConfigFile = "src/main/resources/application.properties";
+        if (args.length == 0){
+            logger.error("In arguments JVM not found the path to file.properties: 'application.properties'!");
+            logger.info("It will use as default the path: '" + pathToConfigFile + "'");
+        } else {
+            pathToConfigFile = args[0];
+        }
+
         Properties properties = new Properties();
         try {
             InputStream input = new FileInputStream(pathToConfigFile);

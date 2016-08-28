@@ -4,7 +4,6 @@ import entity.Answer;
 import entity.Book;
 import gui.GUI;
 import org.slf4j.Logger;
-import services.BookService;
 import services.LibraryCommand;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -16,13 +15,11 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class LibraryController {
     private final static Logger logger = getLogger(LibraryController.class);
 
-    private BookService bookService;
     private GUI gui;
-    private BookManager bookManager;
+    private BookCommandManager bookCommandManager;
 
-    public LibraryController(BookService bookService, GUI gui, BookManager bookManager) {
-        this.bookManager = bookManager;
-        this.bookService = bookService;
+    public LibraryController(BookCommandManager bookCommandManager, GUI gui) {
+        this.bookCommandManager = bookCommandManager;
         this.gui = gui;
     }
 
@@ -31,14 +28,14 @@ public class LibraryController {
         gui.showMessage(greeting);
         Answer answer;
         while (!(answer = getAnswerFromUser()).isExit()) {
-            bookManager.doIt(answer);
+            bookCommandManager.doIt(answer);
         }
     }
 
     private Answer getAnswerFromUser() {
         String answerStr;
         while (true) {
-            answerStr = gui.showMainMenu(bookManager.getMainMenu());
+            answerStr = gui.showMainMenu(bookCommandManager.getMainMenu());
             if (recognizeCommand(answerStr)) {
                 break;
             } else {

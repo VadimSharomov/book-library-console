@@ -32,3 +32,9 @@ U: remove Harry Potter
 U: 2
 P: book Unknown “Harry Potter” was removed 
 This was just an example, feel free to use your creativity to change the program flow.
+
+
+To create mySQL data base type:
+CREATE DATABASE IF NOT EXISTS book_library;
+CREATE USER 'user'@'localhost' IDENTIFIED BY '1111';
+CREATE TABLE IF NOT EXISTS book_library.book (id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT, name varchar(100), author varchar(100));

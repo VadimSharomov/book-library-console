@@ -4,7 +4,7 @@ import entity.Answer;
 import entity.Book;
 import gui.GUI;
 import org.slf4j.Logger;
-import services.BookService;
+import services.BookDAOService;
 import services.LibraryCommand;
 
 import java.util.ArrayList;
@@ -16,15 +16,15 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * @author Vadim Sharomov
  */
-public class BookManager {
+public class BookCommandManager {
     private final static Logger logger = getLogger(LibraryController.class);
 
-    private BookService bookService;
+    private BookDAOService bookDAOService;
     private GUI gui;
     private List<String> mainMenu;
 
-    public BookManager(BookService bookService, GUI gui) {
-        this.bookService = bookService;
+    public BookCommandManager(BookDAOService bookDAOService, GUI gui) {
+        this.bookDAOService = bookDAOService;
         this.gui = gui;
 
         mainMenu = new ArrayList<>();
@@ -34,15 +34,11 @@ public class BookManager {
         mainMenu.add("To remove book type: remove Name of Book");
     }
 
-    public List<String> getMainMenu() {
+    List<String> getMainMenu() {
         return mainMenu;
     }
 
-    public void setMainMenu(List<String> mainMenu) {
-        this.mainMenu = mainMenu;
-    }
-
-    public void doIt(Answer answer) {
+    void doIt(Answer answer) {
         if (LibraryCommand.ADD.getValue().equals(answer.getLibraryCommand())) {
             commandAdd(answer);
         } else if (LibraryCommand.EDIT.getValue().equals(answer.getLibraryCommand())) {
@@ -55,7 +51,7 @@ public class BookManager {
     }
 
     private void commandRemove(Answer answer) {
-        List<Book> listBooks = bookService.getBookByName(answer.getBook());
+        List<Book> listBooks = bookDAOService.getBookByName(answer.getBook());
         int numberSelectedBook = 0;
 
         if (listBooks.size() > 0) {
@@ -63,11 +59,11 @@ public class BookManager {
                 gui.showMessage("We have few books with such name. Please choose one by typing a number of book:\n");
                 numberSelectedBook = gui.chooseBook(listBooks);
             }
-            String not = " not";
-            if (bookService.remove(listBooks.get(numberSelectedBook)) > 0) {
-                not = "";
+            String wordNot = " not";
+            if (bookDAOService.remove(listBooks.get(numberSelectedBook)) > 0) {
+                wordNot = "";
             }
-            gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + not + " removed\n");
+            gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + wordNot + " removed\n");
         } else {
             gui.showMessage("Not found this book:\n" + answer.getBook());
         }
@@ -75,7 +71,7 @@ public class BookManager {
 
     @SuppressWarnings("Since15")
     private void commandAllBooks() {
-        List<Book> listBooks = bookService.getAllBooks();
+        List<Book> listBooks = bookDAOService.getAllBooks();
         listBooks.sort(new Comparator<Book>() {
             @Override
             public int compare(Book b1, Book b2) {
@@ -87,7 +83,7 @@ public class BookManager {
     }
 
     private void commandEdit(Answer answer) {
-        List<Book> listBooks = bookService.getBookByName(answer.getBook());
+        List<Book> listBooks = bookDAOService.getBookByName(answer.getBook());
         int numberSelectedBook = 0;
 
         if (listBooks.size() > 0) {
@@ -95,21 +91,21 @@ public class BookManager {
                 gui.showMessage("We have few books with such name. Please choose one by typing a number of book:\n");
                 numberSelectedBook = gui.chooseBook(listBooks);
             }
-            String not = " not";
-            if (bookService.editBook(listBooks.get(numberSelectedBook), answer.getNewBook()) > 0) {
-                not = "";
+            String wordNot = " not";
+            if (bookDAOService.editBook(listBooks.get(numberSelectedBook), answer.getNewBook()) > 0) {
+                wordNot = "";
             }
-            gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + not + " renamed to " + answer.getNewBook() + "\n");
+            gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + wordNot + " renamed to " + answer.getNewBook() + "\n");
         } else {
             gui.showMessage("Not found this book:\n" + answer.getBook());
         }
     }
 
     private void commandAdd(Answer answer) {
-        String not = " not";
-        if (bookService.add(answer.getBook()) > 0) {
-            not = "";
+        String wordNot = " not";
+        if (bookDAOService.add(answer.getBook()) > 0) {
+            wordNot = "";
         }
-        gui.showMessage("Book " + answer.getBook() + " was" + not + " added\n");
+        gui.showMessage("Book " + answer.getBook() + " was" + wordNot + " added\n");
     }
 }
