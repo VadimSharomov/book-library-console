@@ -4,7 +4,6 @@ import dao.BookDAO;
 import entity.Book;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -15,41 +14,12 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class BookService {
     private final static Logger logger = getLogger(BookService.class);
-    private List<String> mainMenu;
-    private List<String> listCommands;
 
     private BookDAO dao;
 
     public BookService(BookDAO dao) {
         this.dao = dao;
 
-        mainMenu = new ArrayList<>();
-        mainMenu.add("To add new book type: add X. AuthorName \"Book Name\"");
-        mainMenu.add("To edit book type: edit Name of Book");
-        mainMenu.add("To get all books type: all books");
-        mainMenu.add("To remove book type: remove Name of Book");
-
-        listCommands = new ArrayList<>();
-        listCommands.add("add");
-        listCommands.add("remove");
-        listCommands.add("edit");
-        listCommands.add("all books");
-    }
-
-    public List<String> getListCommands() {
-        return listCommands;
-    }
-
-    public void setListCommands(List<String> listCommands) {
-        this.listCommands = listCommands;
-    }
-
-    public List<String> getMainMenu() {
-        return mainMenu;
-    }
-
-    public void setMainMenu(List<String> mainMenu) {
-        this.mainMenu = mainMenu;
     }
 
     public int add(Book book) {
@@ -68,7 +38,7 @@ public class BookService {
         return dao.updateBook(oldBook.getId(), newBook.getName());
     }
 
-    public int remove(Book book){
+    public int remove(Book book) {
         return dao.removeBook(book.getId());
     }
 }

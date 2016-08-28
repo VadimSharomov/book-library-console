@@ -1,8 +1,9 @@
 package main;
 
-import controller.BookLibraryController;
+import controller.LibraryController;
 import dao.BookDAO;
 import dao.BookMYSQL;
+import controller.BookManager;
 import gui.ConsoleGUI;
 import gui.GUI;
 import org.slf4j.Logger;
@@ -28,9 +29,10 @@ public class Main {
         BookDAO bookDAO = new BookMYSQL(propDB.getProperty("url"), propDB.getProperty("username"), propDB.getProperty("password"), propDB.getProperty("table"));
         BookService bookService = new BookService(bookDAO);
         GUI gui = new ConsoleGUI();
-        BookLibraryController bookLibraryController = new BookLibraryController(bookService, gui);
+        BookManager bookManager = new BookManager(bookService, gui);
+        LibraryController libraryController = new LibraryController(bookService, gui, bookManager);
 
-        bookLibraryController.start();
+        libraryController.start();
     }
 
     private static Properties getPropertiesOfDataBase() {
