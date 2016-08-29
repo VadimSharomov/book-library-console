@@ -1,19 +1,20 @@
-package services;
+package controller;
 
 /**
  * @author Vadim Sharomov
  */
-public enum LibraryCommand {
+enum LibraryCommand {
     ADD("add"),
     EDIT("edit"),
+    FIND("find"),
     REMOVE("remove"),
     ALLBOOKS("all books");
+
+    private final String value;
 
     LibraryCommand(String value) {
         this.value = value;
     }
-
-    private final String value;
 
     public String getValue() {
         return value;

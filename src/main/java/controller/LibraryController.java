@@ -4,7 +4,6 @@ import entity.UserQuery;
 import entity.Book;
 import gui.GUI;
 import org.slf4j.Logger;
-import services.LibraryCommand;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -46,12 +45,13 @@ public class LibraryController {
                 gui.showMessage("Unrecognized command: '" + queryStr + "'\n");
             }
         }
-        if ("exit".equals(queryStr.trim().toLowerCase())) {
+        if ("exit".equals(queryStr.toLowerCase())) {
             return new UserQuery(true);
         }
+
         String libraryCommand = getLibraryCommand(queryStr);
         queryStr = queryStr.replace(libraryCommand, "").trim();
-        Book book = getSelectedBook(queryStr);
+        Book book = queriedBook(queryStr);
 
         return new UserQuery(libraryCommand, book);
     }
@@ -66,7 +66,7 @@ public class LibraryController {
         return "Unknown command";
     }
 
-    private Book getSelectedBook(String queryStr) {
+    private Book queriedBook(String queryStr) {
         String authorName, bookName;
         if (queryStr.split("\"").length > 1) {
             authorName = queryStr.split("\"")[0].trim();
@@ -79,7 +79,7 @@ public class LibraryController {
     }
 
     private boolean isRecognizeCommand(String queryStr) {
-        if ("exit".equals(queryStr)) return true;
+        if ("exit".equals(queryStr.toLowerCase())) return true;
         String[] arWords = queryStr.split(" ");
         if (arWords.length < 1) return false;
         for (LibraryCommand libraryCommand: LibraryCommand.values()) {

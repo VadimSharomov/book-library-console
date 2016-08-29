@@ -18,4 +18,6 @@ public interface BookDAO {
     List<Book> allBooks();
 
     List<Book> getBookByName(String bookName);
+
+    List<Book> getBookLikeName(String bookName);
 }

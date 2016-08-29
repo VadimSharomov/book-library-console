@@ -1,23 +1,18 @@
 package controller;
 
-import entity.UserQuery;
 import entity.Book;
+import entity.UserQuery;
 import gui.GUI;
-import org.slf4j.Logger;
 import services.BookDAOService;
-import services.LibraryCommand;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 /**
  * @author Vadim Sharomov
  */
 public class BookCommandManager {
-    private final static Logger logger = getLogger(LibraryController.class);
 
     private BookDAOService bookDAOService;
     private GUI gui;
@@ -28,10 +23,11 @@ public class BookCommandManager {
         this.gui = gui;
 
         mainMenu = new ArrayList<>();
-        mainMenu.add("To add new book type: add X. AuthorName \"Book Name\"");
-        mainMenu.add("To edit book type: edit Name of Book");
-        mainMenu.add("To get all books type: all books");
-        mainMenu.add("To remove book type: remove Name of Book");
+        mainMenu.add("For adding new book, type this: add A.AuthorName \"Book Name\"");
+        mainMenu.add("For editing book, type this: edit Name of Book");
+        mainMenu.add("For finding book, type this: find PartOfNameBook");
+        mainMenu.add("For getting all books, type this: all books");
+        mainMenu.add("For removing book, type this: remove Name of Book");
     }
 
     List<String> getMainMenu() {
@@ -47,7 +43,22 @@ public class BookCommandManager {
             commandAllBooks();
         } else if (LibraryCommand.REMOVE.getValue().equals(userQuery.getLibraryCommand())) {
             commandRemove(userQuery);
+        } else if (LibraryCommand.FIND.getValue().equals(userQuery.getLibraryCommand())){
+            commandFind(userQuery);
         }
+    }
+
+    @SuppressWarnings("Since15")
+    private void commandFind(UserQuery userQuery) {
+        List<Book> listBooks = bookDAOService.getBookLikeName(userQuery.getBook());
+        listBooks.sort(new Comparator<Book>() {
+            @Override
+            public int compare(Book b1, Book b2) {
+                int resCompare = String.CASE_INSENSITIVE_ORDER.compare(b1.getName(), b2.getName());
+                return (resCompare != 0) ? resCompare : b1.getName().compareTo(b2.getName());
+            }
+        });
+        gui.showBooks(listBooks);
     }
 
     private void commandRemove(UserQuery userQuery) {

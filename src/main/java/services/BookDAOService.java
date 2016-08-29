@@ -41,6 +41,10 @@ public class BookDAOService {
     public int remove(Book book) {
         return dao.removeBook(book.getId());
     }
+
+    public List<Book> getBookLikeName(Book book) {
+        return dao.getBookLikeName(book.getName());
+    }
 }
 
 

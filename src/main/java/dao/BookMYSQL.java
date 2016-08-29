@@ -104,7 +104,6 @@ public class BookMYSQL implements BookDAO {
         return result;
     }
 
-
     @Override
     public List<Book> allBooks() {
         connectToBase();
@@ -134,6 +133,28 @@ public class BookMYSQL implements BookDAO {
         try {
             preparedStatement = dbConnection.prepareStatement(query.toString());
             preparedStatement.setString(1, bookName);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                listAllBook.add(new Book(rs.getLong("id"), rs.getString("name"), rs.getString("author")));
+            }
+
+            closeConnect();
+        } catch (SQLException e) {
+            logger.error("SQLException in getBookByName", e.getMessage());
+        } finally {
+            closeConnect();
+        }
+        return listAllBook;
+    }
+
+    @Override
+    public List<Book> getBookLikeName(String bookName) {
+        connectToBase();
+        List<Book> listAllBook = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM ").append(table).append(" WHERE name LIKE ?");
+        try {
+            preparedStatement = dbConnection.prepareStatement(query.toString());
+            preparedStatement.setString(1, "%" + bookName + "%");
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 listAllBook.add(new Book(rs.getLong("id"), rs.getString("name"), rs.getString("author")));
