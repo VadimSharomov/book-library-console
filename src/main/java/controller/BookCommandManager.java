@@ -23,11 +23,11 @@ public class BookCommandManager {
         this.gui = gui;
 
         mainMenu = new ArrayList<>();
-        mainMenu.add("For adding new book, type this: add A.AuthorName \"Book Name\"");
-        mainMenu.add("For editing book, type this: edit Name of Book");
-        mainMenu.add("For finding book, type this: find PartOfNameBook");
-        mainMenu.add("For getting all books, type this: all books");
-        mainMenu.add("For removing book, type this: remove Name of Book");
+        mainMenu.add("add {A.AuthorName \"Book Name\"}     (For adding new book)");
+        mainMenu.add("edit {Name of Book}                (For editing book)");
+        mainMenu.add("find {PartOfNameBook}              (For finding book)");
+        mainMenu.add("all books                          (For getting all books)");
+        mainMenu.add("remove {Name of Book}              (For removing book)");
     }
 
     List<String> getMainMenu() {
