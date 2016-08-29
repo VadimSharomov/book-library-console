@@ -36,21 +36,21 @@ public class LibraryController {
         String answerStr;
         while (true) {
             answerStr = gui.showMainMenu(bookCommandManager.getMainMenu());
-            if (recognizeCommand(answerStr)) {
+            if (isRecognizeCommand(answerStr)) {
                 break;
             } else {
                 gui.showMessage("Unrecognized command: '" + answerStr + "'\n");
             }
         }
-        if ("exit".equals(answerStr)) {
+        if ("exit".equals(answerStr.trim().toLowerCase())) {
             return new Answer(true);
         }
         String libraryCommand = getLibraryCommand(answerStr);
         answerStr = answerStr.replace(libraryCommand, "").trim();
-        Book newBook = getBookWithNewName(answerStr, libraryCommand);
+        Book newNameBook = getBookWithNewName(answerStr, libraryCommand);
         Book book = getSelectedBook(answerStr);
 
-        return new Answer(libraryCommand, book, newBook);
+        return new Answer(libraryCommand, book, newNameBook);
     }
 
     private Book getBookWithNewName(String answerStr, String libraryCommand) {
@@ -83,7 +83,7 @@ public class LibraryController {
         return new Book(bookName, authorName);
     }
 
-    private boolean recognizeCommand(String answer) {
+    private boolean isRecognizeCommand(String answer) {
         if ("exit".equals(answer)) return true;
         String[] arWords = answer.split(" ");
         if (arWords.length < 1) return false;
