@@ -13,7 +13,7 @@ public interface GUI {
 
     String showMainMenu(List<String> mainMenu);
 
-    String enterNewName();
+    String enterNewNameBook();
 
     void showBooks(List<Book> listBook);
 

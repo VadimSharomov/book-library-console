@@ -28,7 +28,7 @@ public class ConsoleGUI implements GUI {
     }
 
     @Override
-    public String enterNewName() {
+    public String enterNewNameBook() {
         System.out.println("Input new name of book and press Enter:");
         Scanner scanner = new Scanner(System.in);
         String newNameBook = "";

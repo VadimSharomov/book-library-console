@@ -1,6 +1,6 @@
 package controller;
 
-import entity.Answer;
+import entity.UserQuery;
 import entity.Book;
 import gui.GUI;
 import org.slf4j.Logger;
@@ -26,69 +26,64 @@ public class LibraryController {
     public void start() {
         String greeting = "\nWelcome to our library!";
         gui.showMessage(greeting);
-        Answer answer;
-        while (!(answer = getAnswerFromUser()).isExit()) {
-            bookCommandManager.doIt(answer);
+
+        UserQuery userQuery;
+        while (!(userQuery = getQueryFromUser()).isExitFromLibrary()) {
+            bookCommandManager.doIt(userQuery);
         }
+
+        String farewell = "\nBest regards!";
+        gui.showMessage(farewell);
     }
 
-    private Answer getAnswerFromUser() {
-        String answerStr;
+    private UserQuery getQueryFromUser() {
+        String queryStr;
         while (true) {
-            answerStr = gui.showMainMenu(bookCommandManager.getMainMenu());
-            if (isRecognizeCommand(answerStr)) {
+            queryStr = gui.showMainMenu(bookCommandManager.getMainMenu());
+            if (isRecognizeCommand(queryStr)) {
                 break;
             } else {
-                gui.showMessage("Unrecognized command: '" + answerStr + "'\n");
+                gui.showMessage("Unrecognized command: '" + queryStr + "'\n");
             }
         }
-        if ("exit".equals(answerStr.trim().toLowerCase())) {
-            return new Answer(true);
+        if ("exit".equals(queryStr.trim().toLowerCase())) {
+            return new UserQuery(true);
         }
-        String libraryCommand = getLibraryCommand(answerStr);
-        answerStr = answerStr.replace(libraryCommand, "").trim();
-        Book newNameBook = getBookWithNewName(answerStr, libraryCommand);
-        Book book = getSelectedBook(answerStr);
+        String libraryCommand = getLibraryCommand(queryStr);
+        queryStr = queryStr.replace(libraryCommand, "").trim();
+        Book book = getSelectedBook(queryStr);
 
-        return new Answer(libraryCommand, book, newNameBook);
+        return new UserQuery(libraryCommand, book);
     }
 
-    private Book getBookWithNewName(String answerStr, String libraryCommand) {
-        String newNameBook = "";
-        if ("edit".equals(libraryCommand)) {
-            newNameBook = gui.enterNewName();
-        }
-        return new Book(newNameBook, "");
-    }
-
-    private String getLibraryCommand(String answerStr) {
+    private String getLibraryCommand(String queryStr) {
         for (LibraryCommand libraryCommand: LibraryCommand.values()) {
-            if (answerStr.startsWith(libraryCommand.getValue())) {
+            if (queryStr.startsWith(libraryCommand.getValue())) {
                 return libraryCommand.getValue();
             }
         }
-        logger.error("Unknown command: '" + answerStr + "'");
+        logger.error("Unknown command: '" + queryStr + "'");
         return "Unknown command";
     }
 
-    private Book getSelectedBook(String answerStr) {
+    private Book getSelectedBook(String queryStr) {
         String authorName, bookName;
-        if (answerStr.split("\"").length > 1) {
-            authorName = answerStr.split("\"")[0].trim();
-            bookName = answerStr.split("\"")[1].trim();
+        if (queryStr.split("\"").length > 1) {
+            authorName = queryStr.split("\"")[0].trim();
+            bookName = queryStr.split("\"")[1].trim();
         } else {
             authorName = "";
-            bookName = answerStr;
+            bookName = queryStr;
         }
         return new Book(bookName, authorName);
     }
 
-    private boolean isRecognizeCommand(String answer) {
-        if ("exit".equals(answer)) return true;
-        String[] arWords = answer.split(" ");
+    private boolean isRecognizeCommand(String queryStr) {
+        if ("exit".equals(queryStr)) return true;
+        String[] arWords = queryStr.split(" ");
         if (arWords.length < 1) return false;
         for (LibraryCommand libraryCommand: LibraryCommand.values()) {
-            if (answer.startsWith(libraryCommand.getValue())) {
+            if (queryStr.startsWith(libraryCommand.getValue())) {
                 return true;
             }
         }

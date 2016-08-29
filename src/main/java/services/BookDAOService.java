@@ -34,8 +34,8 @@ public class BookDAOService {
         return dao.getBookByName(book.getName());
     }
 
-    public int editBook(Book oldBook, Book newBook) {
-        return dao.updateBook(oldBook.getId(), newBook.getName());
+    public int editBook(Book oldBook, String newNameBook) {
+        return dao.updateBook(oldBook.getId(), newNameBook);
     }
 
     public int remove(Book book) {

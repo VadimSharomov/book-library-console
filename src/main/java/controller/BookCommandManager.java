@@ -1,6 +1,6 @@
 package controller;
 
-import entity.Answer;
+import entity.UserQuery;
 import entity.Book;
 import gui.GUI;
 import org.slf4j.Logger;
@@ -38,20 +38,20 @@ public class BookCommandManager {
         return mainMenu;
     }
 
-    void doIt(Answer answer) {
-        if (LibraryCommand.ADD.getValue().equals(answer.getLibraryCommand())) {
-            commandAdd(answer);
-        } else if (LibraryCommand.EDIT.getValue().equals(answer.getLibraryCommand())) {
-            commandEdit(answer);
-        } else if (LibraryCommand.ALLBOOKS.getValue().equals(answer.getLibraryCommand())) {
+    void doIt(UserQuery userQuery) {
+        if (LibraryCommand.ADD.getValue().equals(userQuery.getLibraryCommand())) {
+            commandAdd(userQuery);
+        } else if (LibraryCommand.EDIT.getValue().equals(userQuery.getLibraryCommand())) {
+            commandEdit(userQuery);
+        } else if (LibraryCommand.ALLBOOKS.getValue().equals(userQuery.getLibraryCommand())) {
             commandAllBooks();
-        } else if (LibraryCommand.REMOVE.getValue().equals(answer.getLibraryCommand())) {
-            commandRemove(answer);
+        } else if (LibraryCommand.REMOVE.getValue().equals(userQuery.getLibraryCommand())) {
+            commandRemove(userQuery);
         }
     }
 
-    private void commandRemove(Answer answer) {
-        List<Book> listBooks = bookDAOService.getBookByName(answer.getBook());
+    private void commandRemove(UserQuery userQuery) {
+        List<Book> listBooks = bookDAOService.getBookByName(userQuery.getBook());
         int numberSelectedBook = 0;
 
         if (listBooks.size() > 0) {
@@ -65,7 +65,7 @@ public class BookCommandManager {
             }
             gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + wordNot + " removed\n");
         } else {
-            gui.showMessage("Not found this book:\n" + answer.getBook());
+            gui.showMessage("Not found this book:\n" + userQuery.getBook());
         }
     }
 
@@ -82,30 +82,34 @@ public class BookCommandManager {
         gui.showBooks(listBooks);
     }
 
-    private void commandEdit(Answer answer) {
-        List<Book> listBooks = bookDAOService.getBookByName(answer.getBook());
-        int numberSelectedBook = 0;
+    private void commandEdit(UserQuery userQuery) {
+        List<Book> listBooks = bookDAOService.getBookByName(userQuery.getBook());
 
         if (listBooks.size() > 0) {
+            int numberSelectedBook = 0;
             if (listBooks.size() > 1) {
                 gui.showMessage("We have few books with such name. Please choose one by typing a number of book:\n");
                 numberSelectedBook = gui.chooseBook(listBooks);
             }
+
+            String newNameBook = gui.enterNewNameBook();
+
             String wordNot = " not";
-            if (bookDAOService.editBook(listBooks.get(numberSelectedBook), answer.getNewBook()) > 0) {
+            if (bookDAOService.editBook(listBooks.get(numberSelectedBook), newNameBook) > 0) {
                 wordNot = "";
             }
-            gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + wordNot + " renamed to " + answer.getNewBook() + "\n");
+
+            gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + wordNot + " renamed to " + newNameBook + "\n");
         } else {
-            gui.showMessage("Not found this book:\n" + answer.getBook());
+            gui.showMessage("Not found this book:\n" + userQuery.getBook());
         }
     }
 
-    private void commandAdd(Answer answer) {
+    private void commandAdd(UserQuery userQuery) {
         String wordNot = " not";
-        if (bookDAOService.add(answer.getBook()) > 0) {
+        if (bookDAOService.add(userQuery.getBook()) > 0) {
             wordNot = "";
         }
-        gui.showMessage("Book " + answer.getBook() + " was" + wordNot + " added\n");
+        gui.showMessage("Book " + userQuery.getBook() + " was" + wordNot + " added\n");
     }
 }
