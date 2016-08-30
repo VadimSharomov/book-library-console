@@ -28,6 +28,7 @@ public class BookCommandManager {
         mainMenu.add("find {PartOfNameBook}              (For finding book)");
         mainMenu.add("all books                          (For getting all books)");
         mainMenu.add("remove {Name of Book}              (For removing book)");
+        mainMenu.add("exit                               (For exit from library)");
     }
 
     List<String> getMainMenu() {
@@ -110,7 +111,7 @@ public class BookCommandManager {
                 wordNot = "";
             }
 
-            gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + wordNot + " renamed to " + newNameBook + "\n");
+            gui.showMessage("Book " + listBooks.get(numberSelectedBook) + " was" + wordNot + " renamed to \"" + newNameBook + "\"\n");
         } else {
             gui.showMessage("Not found this book:\n" + userQuery.getBook());
         }

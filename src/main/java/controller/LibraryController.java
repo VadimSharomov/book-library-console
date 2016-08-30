@@ -45,12 +45,13 @@ public class LibraryController {
                 gui.showMessage("Unrecognized command: '" + queryStr + "'\n");
             }
         }
-        if ("exit".equals(queryStr.toLowerCase())) {
+        if (LibraryCommand.EXIT.getValue().equals(queryStr.toLowerCase())) {
             return new UserQuery(true);
         }
 
         String libraryCommand = getLibraryCommand(queryStr);
         queryStr = queryStr.replace(libraryCommand, "").trim();
+
         Book book = queriedBook(queryStr);
 
         return new UserQuery(libraryCommand, book);
@@ -68,9 +69,10 @@ public class LibraryController {
 
     private Book queriedBook(String queryStr) {
         String authorName, bookName;
-        if (queryStr.split("\"").length > 1) {
-            authorName = queryStr.split("\"")[0].trim();
-            bookName = queryStr.split("\"")[1].trim();
+        String quotes = "\"";
+        if (queryStr.split(quotes).length > 1) {
+            authorName = queryStr.split(quotes)[0].trim();
+            bookName = queryStr.split(quotes)[1].trim();
         } else {
             authorName = "";
             bookName = queryStr;
@@ -79,9 +81,11 @@ public class LibraryController {
     }
 
     private boolean isRecognizeCommand(String queryStr) {
-        if ("exit".equals(queryStr.toLowerCase())) return true;
+        if (LibraryCommand.EXIT.getValue().equals(queryStr.toLowerCase())) return true;
+
         String[] arWords = queryStr.split(" ");
         if (arWords.length < 1) return false;
+
         for (LibraryCommand libraryCommand: LibraryCommand.values()) {
             if (queryStr.startsWith(libraryCommand.getValue())) {
                 return true;

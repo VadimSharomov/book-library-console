@@ -8,7 +8,8 @@ enum LibraryCommand {
     EDIT("edit"),
     FIND("find"),
     REMOVE("remove"),
-    ALLBOOKS("all books");
+    ALLBOOKS("all books"),
+    EXIT("exit");
 
     private final String value;
 

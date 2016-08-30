@@ -22,8 +22,6 @@ public class ConsoleGUI implements GUI {
             System.out.println(i + ": " + mainMenu.get(i));
         }
 
-        System.out.println(mainMenu.size() + ": exit                               (For exit from library)");
-
         System.out.println("Input command and press Enter:");
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine().trim();
