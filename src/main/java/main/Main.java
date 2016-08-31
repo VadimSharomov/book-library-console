@@ -61,6 +61,14 @@ public class Main {
             logger.error("Error to load from file properties: '" + pathToConfigFile + "'", e.getMessage());
             System.exit(1);
         }
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            logger.error("Unable to load jdbc Driver", e.getMessage());
+            System.exit(1);
+        }
+
         return properties;
     }
 }

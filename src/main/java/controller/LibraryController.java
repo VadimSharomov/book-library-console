@@ -68,13 +68,13 @@ public class LibraryController {
     }
 
     private Book queriedBook(String queryStr) {
-        String authorName, bookName;
-        String quotes = "\"";
-        if (queryStr.split(quotes).length > 1) {
-            authorName = queryStr.split(quotes)[0].trim();
-            bookName = queryStr.split(quotes)[1].trim();
+        String bookName;
+        String authorName = "";
+        String splitterQuotes = "\"";
+        if (queryStr.split(splitterQuotes).length > 1) {
+            authorName = queryStr.split(splitterQuotes)[0].trim();
+            bookName = queryStr.split(splitterQuotes)[1].trim();
         } else {
-            authorName = "";
             bookName = queryStr;
         }
         return new Book(bookName, authorName);
