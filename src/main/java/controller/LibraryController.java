@@ -38,7 +38,7 @@ public class LibraryController {
     private UserQuery getQueryFromUser() {
         String queryStr;
         while (true) {
-            queryStr = gui.showMainMenu(bookCommandManager.getMainMenu());
+            queryStr = gui.showMainMenu(bookCommandManager.getMainCommandsMenu());
             if (isRecognizeCommand(queryStr)) {
                 break;
             } else {

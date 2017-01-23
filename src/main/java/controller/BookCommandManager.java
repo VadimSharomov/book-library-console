@@ -16,23 +16,20 @@ public class BookCommandManager {
 
     private BookDAOService bookDAOService;
     private GUI gui;
-    private List<String> mainMenu;
+    private List<String> mainCommandsMenu;
 
     public BookCommandManager(BookDAOService bookDAOService, GUI gui) {
         this.bookDAOService = bookDAOService;
         this.gui = gui;
 
-        mainMenu = new ArrayList<>();
-        mainMenu.add("add {A.AuthorName \"Book Name\"}     (For adding new book)");
-        mainMenu.add("edit {Name of Book}                (For editing book)");
-        mainMenu.add("find {PartOfNameBook}              (For finding book)");
-        mainMenu.add("all books                          (For getting all books)");
-        mainMenu.add("remove {Name of Book}              (For removing book)");
-        mainMenu.add("exit                               (For exit from library)");
+        mainCommandsMenu = new ArrayList<>();
+        for (LibraryCommand libraryCommand: LibraryCommand.values()) {
+            mainCommandsMenu.add(libraryCommand.getDescription());
+        }
     }
 
-    List<String> getMainMenu() {
-        return mainMenu;
+    List<String> getMainCommandsMenu() {
+        return mainCommandsMenu;
     }
 
     void doIt(UserQuery userQuery) {
