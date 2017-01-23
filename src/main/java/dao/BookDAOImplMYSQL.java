@@ -12,8 +12,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * @author Vadim Sharomov
  */
-public class BookMYSQL implements BookDAO {
-    private final static Logger logger = getLogger(BookMYSQL.class);
+public class BookDAOImplMYSQL implements BookDAO {
+    private final static Logger logger = getLogger(BookDAOImplMYSQL.class);
     private String url;
     private String user;
     private String password;
@@ -21,7 +21,7 @@ public class BookMYSQL implements BookDAO {
     private Connection dbConnection = null;
     private PreparedStatement preparedStatement = null;
 
-    public BookMYSQL(String url, String user, String password, String table) {
+    public BookDAOImplMYSQL(String url, String user, String password, String table) {
         this.url = url;
         this.user = user;
         this.password = password;
