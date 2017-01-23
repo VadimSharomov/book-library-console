@@ -11,7 +11,9 @@ public interface GUI {
 
     void showMessage(String message);
 
-    String showMainMenu(List<String> mainMenu);
+    void showMainMenu(List<String> mainMenu);
+
+    String getUserRequest();
 
     String enterNewNameBook();
 

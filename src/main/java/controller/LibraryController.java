@@ -36,23 +36,24 @@ public class LibraryController {
     }
 
     private UserQuery getQueryFromUser() {
-        String queryStr;
+        String userQueryStr;
         while (true) {
-            queryStr = gui.showMainMenu(bookCommandManager.getMainCommandsMenu());
-            if (isRecognizeCommand(queryStr)) {
+            gui.showMainMenu(bookCommandManager.getCommandsMenu());
+            userQueryStr = gui.getUserRequest();
+            if (isRecognizeCommand(userQueryStr)) {
                 break;
             } else {
-                gui.showMessage("Unrecognized command: '" + queryStr + "'\n");
+                gui.showMessage("Unrecognized command: '" + userQueryStr + "'\n");
             }
         }
-        if (LibraryCommand.EXIT.getValue().equals(queryStr.toLowerCase())) {
+        if (LibraryCommand.EXIT.getValue().equals(userQueryStr.toLowerCase())) {
             return new UserQuery(true);
         }
 
-        String libraryCommand = getLibraryCommand(queryStr);
-        queryStr = queryStr.replace(libraryCommand, "").trim();
+        String libraryCommand = getLibraryCommand(userQueryStr);
 
-        Book book = queriedBook(queryStr);
+        String queriedBook = userQueryStr.replace(libraryCommand, "").trim();
+        Book book = queriedBook(queriedBook);
 
         return new UserQuery(libraryCommand, book);
     }

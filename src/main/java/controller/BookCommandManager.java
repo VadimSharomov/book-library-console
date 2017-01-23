@@ -16,20 +16,20 @@ public class BookCommandManager {
 
     private BookDAOService bookDAOService;
     private GUI gui;
-    private List<String> mainCommandsMenu;
+    private List<String> commandsMenu;
 
     public BookCommandManager(BookDAOService bookDAOService, GUI gui) {
         this.bookDAOService = bookDAOService;
         this.gui = gui;
 
-        mainCommandsMenu = new ArrayList<>();
+        commandsMenu = new ArrayList<>();
         for (LibraryCommand libraryCommand: LibraryCommand.values()) {
-            mainCommandsMenu.add(libraryCommand.getDescription());
+            commandsMenu.add(libraryCommand.getDescription());
         }
     }
 
-    List<String> getMainCommandsMenu() {
-        return mainCommandsMenu;
+    List<String> getCommandsMenu() {
+        return commandsMenu;
     }
 
     void doIt(UserQuery userQuery) {

@@ -16,12 +16,16 @@ public class ConsoleGUI implements GUI {
     }
 
     @Override
-    public String showMainMenu(List<String> mainMenu) {
+    public void showMainMenu(List<String> mainMenu) {
         System.out.println("Main menu:");
         for (int i = 0; i < mainMenu.size(); i++) {
             System.out.println(i + ": " + mainMenu.get(i));
         }
+    }
 
+    @Override
+    public String getUserRequest() {
+        String res = "";
         System.out.println("Input command and press Enter:");
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine().trim();
