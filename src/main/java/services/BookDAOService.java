@@ -29,8 +29,8 @@ public class BookDAOService {
         return dao.allBooks();
     }
 
-    public List<Book> getBookByName(Book book) {
-        return dao.getBookByName(book.getName());
+    public List<Book> getBookByName(String bookName) {
+        return dao.getBookByName(bookName);
     }
 
     public int editBook(Book oldBook, String newNameBook) {

@@ -2,7 +2,6 @@ package main;
 
 import org.slf4j.Logger;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author Vadim Sharomov
  */
 class ReadConfig {
-    private final static Logger logger = getLogger(Main.class);
+    private final static Logger logger = getLogger(ReadConfig.class);
 
     Properties getProperties() {
         String configFileName = "application.properties";
@@ -26,9 +25,6 @@ class ReadConfig {
             if(inputStreamProperties != null){
                 inputStreamProperties.close();
             }
-        } catch (FileNotFoundException e) {
-            logger.error("File properties not found: '" + configFileName + "'", e.getMessage());
-            System.exit(1);
         } catch (IOException e) {
             logger.error("Error to load from file properties: '" + configFileName + "'", e.getMessage());
             System.exit(1);

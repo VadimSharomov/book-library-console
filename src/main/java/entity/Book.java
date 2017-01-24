@@ -8,6 +8,7 @@ public class Book {
     private long id;
     private String name;
     private String author;
+    private Language language;
 
     public Book() {
     }
@@ -45,6 +46,14 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
     @Override

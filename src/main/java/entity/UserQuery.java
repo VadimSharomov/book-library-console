@@ -4,12 +4,12 @@ package entity;
  * @author Vadim Sharomov
  */
 public class UserQuery {
-    private String libraryCommand;
+    private String commandLibrary;
     private Book book;
     private boolean exitFromLibrary;
 
-    public UserQuery(String libraryCommand, Book book) {
-        this.libraryCommand = libraryCommand;
+    public UserQuery(String commandLibrary, Book book) {
+        this.commandLibrary = commandLibrary;
         this.book = book;
     }
 
@@ -21,8 +21,8 @@ public class UserQuery {
         this.exitFromLibrary = exitFromLibrary;
     }
 
-    public String getLibraryCommand() {
-        return libraryCommand;
+    public String getCommandLibrary() {
+        return commandLibrary;
     }
 
     public Book getBook() {

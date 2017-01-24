@@ -8,7 +8,12 @@ import java.util.Scanner;
 /**
  * @author Vadim Sharomov
  */
-public class ConsoleGUI implements GUI {
+public class GUIConsole implements GUI {
+    private Scanner scanner;
+
+    public GUIConsole() {
+        scanner = new Scanner(System.in);
+    }
 
     @Override
     public void showMessage(String message) {
@@ -18,23 +23,20 @@ public class ConsoleGUI implements GUI {
     @Override
     public void showMainMenu(List<String> mainMenu) {
         System.out.println("Main menu:");
-        for (String aMainMenu : mainMenu) {
-            System.out.println(" " + aMainMenu);
+        for (String itemMenu : mainMenu) {
+            System.out.println(" " + itemMenu);
         }
     }
 
     @Override
     public String getUserRequest() {
-        String res = "";
         System.out.println("Input command and press Enter:");
-        Scanner scanner = new Scanner(System.in);
         return scanner.nextLine().trim();
     }
 
     @Override
     public String enterNewNameBook() {
         System.out.println("Input new name of book and press Enter:");
-        Scanner scanner = new Scanner(System.in);
         String newNameBook = "";
         while (newNameBook.length() == 0) {
             newNameBook = scanner.nextLine().trim();
@@ -56,7 +58,6 @@ public class ConsoleGUI implements GUI {
         for (int i = 0; i < listBook.size(); i++) {
             System.out.println((i + 1) + ". " + listBook.get(i));
         }
-        Scanner scanner = new Scanner(System.in);
         return scanner.nextInt() - 1;
     }
 }

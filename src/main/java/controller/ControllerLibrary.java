@@ -16,18 +16,19 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author Vadim Sharomov
  */
 
-public class LibraryController {
-    private final static Logger logger = getLogger(LibraryController.class);
+public class ControllerLibrary {
+    private final static Logger logger = getLogger(ControllerLibrary.class);
     private GUI gui;
-    private Map<String, Command> commandMap = new HashMap<>();
+    private Map<String, Command> commands = new HashMap<>();
 
-    public LibraryController(BookDAOService bookDAOService, GUI gui) {
+    public ControllerLibrary(BookDAOService bookDAOService, GUI gui) {
         this.gui = gui;
+        Command command;
         Set<Class<? extends Command>> commandClasses = new Reflections().getSubTypesOf(Command.class);
         for (Class commandClass : commandClasses) {
             try {
-                Command command = (Command) commandClass.getConstructor(BookDAOService.class, GUI.class).newInstance(bookDAOService, gui);
-                commandMap.put(command.getName(), command);
+                command = (Command) commandClass.getConstructor(BookDAOService.class, GUI.class).newInstance(bookDAOService, gui);
+                commands.put(command.getName(), command);
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 logger.info("Unable create instance of command class '" + commandClass.getName() + "'");
             }
@@ -35,44 +36,44 @@ public class LibraryController {
     }
 
     public void start() {
-        String greeting = "\nWelcome to our library!";
-        gui.showMessage(greeting);
+        gui.showMessage("\nWelcome to our library!");
 
         UserQuery userQuery;
         do {
             showMainMenu();
             userQuery = getQueryFromUser();
-            if (commandMap.containsKey(userQuery.getLibraryCommand())) {
-                commandMap.get(userQuery.getLibraryCommand()).execute(userQuery);
+            if (isCorrectUserQuery(userQuery)) {
+                commands.get(userQuery.getCommandLibrary()).execute(userQuery);
             }
-        } while (!(userQuery).isExitFromLibrary());
+        } while (!userQuery.isExitFromLibrary());
 
-        String farewell = "\nBest regards!";
-        gui.showMessage(farewell);
+        gui.showMessage("\nBest regards!");
+    }
+
+    private boolean isCorrectUserQuery(UserQuery userQuery) {
+        return commands.containsKey(userQuery.getCommandLibrary());
     }
 
     private UserQuery getQueryFromUser() {
         String userQueryStr;
         while (true) {
             userQueryStr = gui.getUserRequest();
-            if (isRecognizeCommand(userQueryStr)) {
-                break;
-            } else {
+            if (!isRecognizeCommand(userQueryStr)) {
                 gui.showMessage("Unrecognized command: '" + userQueryStr + "'\n");
+                continue;
             }
+            break;
         }
 
         String libraryCommand = getLibraryCommand(userQueryStr);
-
-        String queriedBook = userQueryStr.replace(libraryCommand, "").trim();
-        Book book = getQueriedBook(queriedBook);
+        Book book = getQueriedBook(userQueryStr.replace(libraryCommand, "").trim());
 
         return new UserQuery(libraryCommand, book);
     }
 
     private void showMainMenu() {
         List<String> mainMenu = new ArrayList<>();
-        for (Command command : commandMap.values()) {
+        for (Command command : commands.values()) {
             mainMenu.add(command.getDescription());
             Collections.sort(mainMenu);
         }
@@ -80,7 +81,7 @@ public class LibraryController {
     }
 
     private String getLibraryCommand(String queryStr) {
-        for (Command com : commandMap.values()) {
+        for (Command com : commands.values()) {
             if (queryStr.startsWith(com.getName())) {
                 return com.getName();
             }
@@ -103,10 +104,10 @@ public class LibraryController {
     }
 
     private boolean isRecognizeCommand(String queryStr) {
-        String[] arWords = queryStr.split(" ");
-        if (arWords.length < 1) return false;
+        String[] splittedWords = queryStr.split(" ");
+        if (splittedWords.length < 1) return false;
 
-        for (Command com : commandMap.values()) {
+        for (Command com : commands.values()) {
             if (queryStr.startsWith(com.getName())) {
                 return true;
             }

@@ -1,10 +1,9 @@
 package main;
 
-import controller.LibraryController;
+import controller.ControllerLibrary;
+import gui.GUIConsole;
 import services.BookDAO;
 import services.BookDAOImplMYSQL;
-import gui.ConsoleGUI;
-import gui.GUI;
 import services.BookDAOService;
 
 import java.util.Properties;
@@ -18,10 +17,7 @@ public class Main {
         Properties propDB = (new ReadConfig()).getProperties();
         BookDAO bookDAO = new BookDAOImplMYSQL(propDB.getProperty("url"), propDB.getProperty("username"), propDB.getProperty("password"), propDB.getProperty("table"));
 
-        BookDAOService bookDAOService = new BookDAOService(bookDAO);
-        GUI gui = new ConsoleGUI();
-
-        LibraryController libraryController = new LibraryController(bookDAOService, gui);
-        libraryController.start();
+        ControllerLibrary controllerLibrary = new ControllerLibrary(new BookDAOService(bookDAO), new GUIConsole());
+        controllerLibrary.start();
     }
 }

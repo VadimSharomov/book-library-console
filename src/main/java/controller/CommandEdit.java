@@ -23,7 +23,7 @@ public class CommandEdit implements Command {
 
     @Override
     public void execute(UserQuery userQuery) {
-        List<Book> listBooks = bookDAOService.getBookByName(userQuery.getBook());
+        List<Book> listBooks = bookDAOService.getBookByName(userQuery.getBook().getName());
 
         if (listBooks.size() > 0) {
             int numberSelectedBook = 0;

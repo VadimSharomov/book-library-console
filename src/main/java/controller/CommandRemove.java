@@ -23,7 +23,7 @@ public class CommandRemove implements Command {
 
     @Override
     public void execute(UserQuery userQuery) {
-        List<Book> listBooks = bookDAOService.getBookByName(userQuery.getBook());
+        List<Book> listBooks = bookDAOService.getBookByName(userQuery.getBook().getName());
         int numberSelectedBook = 0;
 
         if (listBooks.size() > 0) {
