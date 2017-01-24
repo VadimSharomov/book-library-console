@@ -13,12 +13,12 @@ public class UserQuery {
         this.book = book;
     }
 
-    public UserQuery(boolean exitFromLibrary) {
-        this.exitFromLibrary = exitFromLibrary;
-    }
-
     public boolean isExitFromLibrary() {
         return exitFromLibrary;
+    }
+
+    public void setExitFromLibrary(boolean exitFromLibrary) {
+        this.exitFromLibrary = exitFromLibrary;
     }
 
     public String getLibraryCommand() {
@@ -28,5 +28,4 @@ public class UserQuery {
     public Book getBook() {
         return book;
     }
-
 }

@@ -18,8 +18,8 @@ public class ConsoleGUI implements GUI {
     @Override
     public void showMainMenu(List<String> mainMenu) {
         System.out.println("Main menu:");
-        for (int i = 0; i < mainMenu.size(); i++) {
-            System.out.println(i + ": " + mainMenu.get(i));
+        for (String aMainMenu : mainMenu) {
+            System.out.println(" " + aMainMenu);
         }
     }
 
@@ -46,7 +46,7 @@ public class ConsoleGUI implements GUI {
     public void showBooks(List<Book> listBook) {
         System.out.println("Our books:");
         for (int i = 0; i < listBook.size(); i++) {
-            System.out.println((i + 1) + ". " + listBook.get(i));
+            System.out.println(" " + (i + 1) + ". " + listBook.get(i));
         }
         System.out.println();
     }

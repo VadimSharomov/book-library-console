@@ -1,9 +1,8 @@
 package main;
 
-import controller.BookCommandManager;
 import controller.LibraryController;
-import dao.BookDAO;
-import dao.BookDAOImplMYSQL;
+import services.BookDAO;
+import services.BookDAOImplMYSQL;
 import gui.ConsoleGUI;
 import gui.GUI;
 import services.BookDAOService;
@@ -22,9 +21,7 @@ public class Main {
         BookDAOService bookDAOService = new BookDAOService(bookDAO);
         GUI gui = new ConsoleGUI();
 
-        BookCommandManager bookCommandManager = new BookCommandManager(bookDAOService, gui);
-        LibraryController libraryController = new LibraryController(bookCommandManager, gui);
-
+        LibraryController libraryController = new LibraryController(bookDAOService, gui);
         libraryController.start();
     }
 }
